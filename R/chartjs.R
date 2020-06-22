@@ -143,6 +143,12 @@ new_lines <- function(chart, y, label = guess_label(substitute(y)), ...) {
 }
 
 
+#' @export
+new_scatter <- function(chart, y, label = guess_label(substitute(y)), ...) {
+  new_trace(chart = chart, y = y, label = label, type = "scatter", ...)
+}
+
+
 
 
 #' Deparse some input code to guess a good label for a chart
@@ -172,9 +178,9 @@ f <- function() {
     print()
   
   p <- ggplot2::diamonds %>%
-    mutate(cut = cut(carat, 50)) %>%
-    group_by(cut) %>%
-    summarize(price = mean(price), x = mean(y)) %>%
+    dplyr::mutate(cut = cut(carat, 50)) %>%
+    dplyr::group_by(cut) %>%
+    dplyr::summarize(price = mean(price), x = mean(y)) %>%
     chartjs(x = ~ cut) %>%
     new_bars(y = ~ price) %>%
     new_lines(~ x * mean(price) / mean(x)) %>%
@@ -183,7 +189,7 @@ f <- function() {
   htmltools::html_print(purrr::map(1:5, ~ p), background = "#FFF")
   htmltools::save_html(purrr::map(1:100, ~ p), file = "~/Downloads/Tag-List.html", background = "#FFF")
   
-  purrr::map(1:10, ~ tibble(Index = 1:100, Value = runif(100) %>% sort()) %>% chartjs(~ Index) %>% new_lines(~ Value)) %>%
+  purrr::map(1:100, ~ dplyr::tibble(Index = 1:100, Value = runif(100) %>% sort()) %>% chartjs(~ Index) %>% new_lines(~ Value)) %>%
     htmltools::html_print(.)
   
 }

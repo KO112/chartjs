@@ -10,3 +10,9 @@ NULL
 #' @importFrom htmlwidgets JS
 #' @export
 htmlwidgets::JS
+
+
+#' Remove NULLs
+non_null <- function(x) {
+  Filter(Negate(is.null), x)
+}
