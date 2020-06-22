@@ -1,10 +1,8 @@
 # Base options
 baseOptions <- list(
-  list(
-    tooltips = list(
-      mode = "index",
-      intersect = FALSE
-    )
+  tooltips = list(
+    mode = "index",
+    intersect = FALSE
   )
 )
 
