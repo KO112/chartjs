@@ -1,0 +1,8 @@
+dependencies:
+ - name: Chart.js
+   version: 2.9.3
+   src: htmlwidgets/lib/Chart.js/2.9.3
+   script:
+      - Chart.bundle.min.js
+      - utils.js
+   stylesheet: Chart.css
