@@ -16,6 +16,7 @@ Imports:
     lazyeval,
     magrittr
 Suggests: 
+    testthat (>= 2.1.0)
 Collate: 
     'utils.R'
     'chartjs.R'
