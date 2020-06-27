@@ -29,11 +29,6 @@ HTMLWidgets.widget({
         
         // 
         chartObj = new Chart(canv.getContext('2d'), x);
-        /*chartObj = new Chart(canv.getContext('2d'), {
-          type: x.type,
-          data: x.data,
-          options: x.options
-        });*/
         
       },
       

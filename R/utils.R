@@ -16,3 +16,15 @@ htmlwidgets::JS
 non_null <- function(x) {
   Filter(Negate(is.null), x)
 }
+
+
+#' Check arguments
+check_arg <- function(arg, name, val, validVals) {
+  if ((arg == name) && (! val %in% validVals)) {
+    warning(immediate. = TRUE,
+      glue::glue("'{val}' is not a valid setting for '{name}'. '{validVals[1]}' will be used instead.")
+    )
+    return(validVals[1])
+  }
+  return(val)
+}
