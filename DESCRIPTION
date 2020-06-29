@@ -20,4 +20,7 @@ Suggests:
 Collate: 
     'utils.R'
     'chartjs.R'
+    'options.R'
+    'other.R'
     'shiny.R'
+    'traces.R'

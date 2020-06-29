@@ -27,14 +27,14 @@ HTMLWidgets.widget({
         console.log(width);
         console.log(height);
         
-        // 
+        // Create the chart object
         chartObj = new Chart(canv.getContext('2d'), x);
         
       },
       
       // Runs when the object is resized
       resize: function(width, height) {
-        console.log("RESIZING");
+        console.log("RESIZING " + el.id);
         // chartObj.resize();
       }
       

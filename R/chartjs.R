@@ -63,6 +63,8 @@ chartjs <- function(
     elementId = elementId,
     preRenderHook = function(widget) {
       widget$x %<>% .[c("type", "data", "options")]
+      widget$x$options$scales$xAxes %<>% {if (!is.null(.)) unname(.)}
+      widget$x$options$scales$yAxes %<>% {if (!is.null(.)) unname(.)}
       return(widget)
     }
   )

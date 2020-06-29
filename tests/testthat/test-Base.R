@@ -15,17 +15,17 @@ test_that("chartjs", {
 devtools::load_all("~/GitHub/chartjs")
 
 # 
-p <- chartjs(mtcars[order(mtcars$mpg), ], x = ~ as.character(1:32), width = "75%") %>%
+p1 <- chartjs(mtcars[order(mtcars$mpg), ], x = ~ as.character(1:32), width = "75%") %>%
   new_bars(y = ~ disp) %>%
   new_lines(y = ~ wt * 100, bgCol = "#0F0", brdCol = "#F00", radius = 0) %>%
   print()
 
 # 
-p <- ggplot2::diamonds %>%
+p2 <- ggplot2::diamonds %>%
   dplyr::mutate(cut = cut(carat, 50)) %>%
   dplyr::group_by(cut) %>%
   dplyr::summarize(price = mean(price), x = mean(y)) %>%
-  chartjs(x = ~ cut, width = "75%") %>%
+  chartjs(x = ~ cut) %>%
   new_bars(y = ~ price) %>%
   new_lines(~ x * mean(price) / mean(x)) %>%
   print()
@@ -75,7 +75,28 @@ colnames(mtcars) %>%
 
 
 # Simple test
-devtools::load_all("~/GitHub/chartjs")
-p <- chartjs(mtcars %>% dplyr::arrange(mpg), 1:32) %>%
-  new_lines(~ mpg, bgCol = "red", brdCol = "red", brdWidth = 1) %>%
-  alter_axis("y", 1, min = 0) %>% print()
+p3 <- chartjs(mtcars %>% dplyr::arrange(mpg), 1:32) %>%
+  new_lines(~ mpg, bgCol = "#3C3", brdWidth = 1) %>%
+  new_bars(~ disp, bgCol = "red", brdCol = "red", brdWidth = 1, yAxis = "y2") %>%
+  alter_axis("y2", min = 0, pos = "right") %>% print()
+
+# Intermediate test
+p4 <- chartjs(mtcars %>% dplyr::arrange(mpg), 1:32) %>%
+  new_lines(~ mpg, bgCol = "#3C3", brdWidth = 2, radius = 2.5) %>%
+  new_bars(~ disp / max(disp), bgCol = "#666", brdCol = "red", brdWidth = 1.5, yAxis = "y2", barPerc = 1, catPerc = 1) %>%
+  alter_axis("y2", min = 0, pos = "right", percent = TRUE) %>% print()
+
+# Categorical test
+p5 <- data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry", "Orange"))[, Length := nchar(Fruit)] %>%
+  chartjs(x = ~ Fruit) %>%
+  new_bars(y = ~ Length) %>%
+  new_bars(y = ~ Length * 2, label = "Double Length") %>%
+  alter_axis("y1", min = 0) %>% print()
+
+# Filled area
+p6 <- data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry", "Orange"))[, Length := nchar(Fruit)] %>%
+  chartjs(x = ~ Fruit) %>%
+  new_lines(y = "Length", fill = "+2", brdWidth = 0, radius = 0) %>%
+  new_lines(y = ~ Length * 1.5, bgCol = "green", radius = 0) %>%
+  new_lines(y = ~ Length * 2, brdWidth = 0, radius = 0) %>%
+  alter_axis("y1", min = 0, percent = TRUE) %>% print()

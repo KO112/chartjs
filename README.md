@@ -1,6 +1,6 @@
 # Introduction
 
-This package provides an interfact to the `Chart.js` JavaScript library.
+This package provides an `R` interface to the `Chart.js` JavaScript library.
 
 
 

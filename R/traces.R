@@ -10,15 +10,17 @@ make_dataset <- function(
   data, y, label = NULL, type, ...,
   yAxis = NULL, xAxis = NULL, order = NULL,
   fill = (type != "line"), bgCol = NULL,
-  brdCol = NULL, brdWidth = NULL,
-  radius = NULL, hoverRadius = NULL
+  brdCol = bgCol, brdWidth = NULL,
+  radius = NULL, hoverRadius = NULL,
+  barPerc = NULL, catPerc = NULL
 ) {
   non_null(list(
     label = label, data = eval_data(data, y), type = type, ...,
     yAxisID = yAxis, xAxisID = xAxis, order = order,
     fill = fill, backgroundColor = bgCol,
     borderColor = brdCol, borderWidth = brdWidth,
-    pointRadius = radius, pointHoverRadius = hoverRadius
+    pointRadius = radius, pointHoverRadius = hoverRadius,
+    barPercentage = barPerc, categoryPercentage = catPerc
   ))
 }
 
@@ -26,12 +28,12 @@ make_dataset <- function(
 
 
 #' @export
-new_trace <- function(chart, y, label = guess_label(substitute(y)), type, ...) {
+new_trace <- function(chart, y, label = guess_label(substitute(y)), yAxis = "y1", type, ...) {
   args <- list(...)
   chart$x$data$datasets %<>%
-    append(list(make_dataset(data = chart$x$rawData, y = y, label = label, type = type, ...)))
-  if ("yAxis" %in% names(args))
-    chart$x$options$scales %<>% append(list(make_scale(id = yAxis)))
+    append(list(make_dataset(data = chart$x$rawData, y = y, label = label, type = type, yAxis = yAxis, ...)))
+  chart <- alter_axis(chart = chart, id = yAxis, xOrY = "y")
+  # chart$x$options$scales$yAxes %<>% append(list(make_scale(id = args$yAxis)) %>% setNames(args$yAxis))
   return(chart)
 }
 
