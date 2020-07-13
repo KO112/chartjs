@@ -19,6 +19,15 @@ baseOptions <- list(
   tooltips = list(
     mode = "index",
     intersect = FALSE
+  ),
+  legend = list(
+    labels = list(
+      filter = JS("
+        function (legendItem, chartData) {
+          return (chartData.datasets[legendItem.datasetIndex].legend !== false)
+        }
+      ")
+    )
   )
 )
 

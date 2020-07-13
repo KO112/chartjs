@@ -9,7 +9,7 @@ HTMLWidgets.widget({
     
     // Create the chart object, the new chart/canvas element, then place the chart in the widget element
     var chartObj;
-    var canv = document.createElement("canvas");
+    var canv = document.createElement('canvas');
     el.appendChild(canv);
     
     // Return the rendering/resizing functions
@@ -29,12 +29,13 @@ HTMLWidgets.widget({
         
         // Create the chart object
         chartObj = new Chart(canv.getContext('2d'), x);
+        el.chartObj = chartObj;
         
       },
       
       // Runs when the object is resized
       resize: function(width, height) {
-        console.log("RESIZING " + el.id);
+        console.log('Resizing chartjs: ' + el.id);
         // chartObj.resize();
       }
       

@@ -31,8 +31,8 @@ p2 <- ggplot2::diamonds %>%
   print()
 
 # 
-htmltools::html_print(purrr::map(1:5, ~ p), background = "#FFF")
-htmltools::save_html(purrr::map(1:100, ~ p), file = "~/Downloads/Tag-List.html", background = "#FFF")
+htmltools::html_print(purrr::map(1:5, ~ p1), background = "#FFF")
+htmltools::save_html(purrr::map(1:100, ~ p1), file = "~/Downloads/Tag-List.html", background = "#FFF")
 
 # 
 purrr::map(1:100, ~ {
@@ -66,9 +66,11 @@ purrr::map(sumData, ~ chartjs(.x, x = ~ Label, width = "75%") %>% new_bars(y = ~
   htmltools::save_html(., file = "~/Downloads/Model-Plots.html")
 
 # 
-colnames(mtcars) %>%
-  purrr::map(~ mtcars %>% dplyr::select(mpg, Resp = .x)) %>%
-  purrr::map(~ chartjs(mtcars, x = ~ mpg, width = "75%") %>% new_bars(y = ~ Resp)) %>% htmltools::html_print()
+# colnames(mtcars) %>%
+#   purrr::map(~ mtcars %>% dplyr::select(mpg, Resp = .x)) %>%
+#   tail(-1) %>%
+#   purrr::map(~ chartjs(.x, x = ~ mpg, width = "75%") %>% new_bars(y = ~ Resp)) %>%
+#   htmltools::html_print(.)
 
 
 
@@ -93,10 +95,15 @@ p5 <- data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry
   new_bars(y = ~ Length * 2, label = "Double Length") %>%
   alter_axis("y1", min = 0) %>% print()
 
-# Filled area
+# Filled area + hidden label
 p6 <- data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry", "Orange"))[, Length := nchar(Fruit)] %>%
   chartjs(x = ~ Fruit) %>%
-  new_lines(y = "Length", fill = "+2", brdWidth = 0, radius = 0) %>%
+  new_lines(y = "Length", fill = "+2", brdWidth = 0, radius = 0, legend = FALSE) %>%
   new_lines(y = ~ Length * 1.5, bgCol = "green", radius = 0) %>%
-  new_lines(y = ~ Length * 2, brdWidth = 0, radius = 0) %>%
+  new_lines(y = ~ Length * 2, brdWidth = 0, radius = 0, legend = FALSE) %>%
   alter_axis("y1", min = 0, percent = TRUE) %>% print()
+
+# Hidden label
+p7 <- chartjs(mtcars %>% dplyr::arrange(mpg), 1:32) %>%
+  new_lines(~ mpg, legend = FALSE) %>%
+  new_bars(~ disp) %>% print()
