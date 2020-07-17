@@ -61,12 +61,15 @@ chartjs <- function(
     height = height,
     package = "chartjs",
     elementId = elementId,
+    
+    # Before passing the data to JavaScript, select only the type/data/options objects, & remove axis names
     preRenderHook = function(widget) {
       widget$x %<>% .[c("type", "data", "options")]
       widget$x$options$scales$xAxes %<>% {if (!is.null(.)) unname(.)}
       widget$x$options$scales$yAxes %<>% {if (!is.null(.)) unname(.)}
       return(widget)
     }
+    
   )
   
   

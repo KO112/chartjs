@@ -75,7 +75,6 @@ purrr::map(sumData, ~ chartjs(.x, x = ~ Label, width = "75%") %>% new_bars(y = ~
 
 
 
-
 # Simple test
 p3 <- chartjs(mtcars %>% dplyr::arrange(mpg), 1:32) %>%
   new_lines(~ mpg, bgCol = "#3C3", brdWidth = 1) %>%
@@ -89,14 +88,14 @@ p4 <- chartjs(mtcars %>% dplyr::arrange(mpg), 1:32) %>%
   alter_axis("y2", min = 0, pos = "right", percent = TRUE) %>% print()
 
 # Categorical test
-p5 <- data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry", "Orange"))[, Length := nchar(Fruit)] %>%
+p5 <- data.table::data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry", "Orange"))[, Length := nchar(Fruit)] %>%
   chartjs(x = ~ Fruit) %>%
   new_bars(y = ~ Length) %>%
   new_bars(y = ~ Length * 2, label = "Double Length") %>%
   alter_axis("y1", min = 0) %>% print()
 
 # Filled area + hidden label
-p6 <- data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry", "Orange"))[, Length := nchar(Fruit)] %>%
+p6 <- data.table::data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry", "Orange"))[, Length := nchar(Fruit)] %>%
   chartjs(x = ~ Fruit) %>%
   new_lines(y = "Length", fill = "+2", brdWidth = 0, radius = 0, legend = FALSE) %>%
   new_lines(y = ~ Length * 1.5, bgCol = "green", radius = 0) %>%
@@ -107,3 +106,10 @@ p6 <- data.table(Fruit = c("Apple", "Banana", "Blueberry", "Cherry", "Strawberry
 p7 <- chartjs(mtcars %>% dplyr::arrange(mpg), 1:32) %>%
   new_lines(~ mpg, legend = FALSE) %>%
   new_bars(~ disp) %>% print()
+
+# Sample data
+p8 <- rsavis::sampleData[, .(Int100Clean = mean(Int100Clean)), keyby = Int20Clean] %>%
+  chartjs(x = ~ as.character(Int20Clean), height = 300, type = "line") %>%
+  new_lines(y = ~ Int100Clean, stepped = "middle") %>%
+  new_lines(y = ~ Int100Clean) %>%
+  alter_options(animDur = 0) %>% print()

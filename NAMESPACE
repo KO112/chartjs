@@ -3,6 +3,7 @@
 export(JS)
 export(alter_axis)
 export(alter_options)
+export(axis_title)
 export(chartjs)
 export(chartjsOutput)
 export(new_bars)

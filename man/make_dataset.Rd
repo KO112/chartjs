@@ -13,12 +13,15 @@ make_dataset(
   yAxis = NULL,
   xAxis = NULL,
   order = NULL,
+  legend = NULL,
   fill = (type != "line"),
   bgCol = NULL,
   brdCol = bgCol,
   brdWidth = NULL,
   radius = NULL,
   hoverRadius = NULL,
+  tension = NULL,
+  stepped = list(NULL, FALSE, TRUE, "before", "after", "middle")[[1]],
   barPerc = NULL,
   catPerc = NULL
 )

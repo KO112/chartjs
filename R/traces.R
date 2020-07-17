@@ -11,7 +11,8 @@ make_dataset <- function(
   yAxis = NULL, xAxis = NULL, order = NULL, legend = NULL,
   fill = (type != "line"), bgCol = NULL,
   brdCol = bgCol, brdWidth = NULL,
-  radius = NULL, hoverRadius = NULL,
+  radius = NULL, hoverRadius = NULL, tension = NULL,
+  stepped = list(NULL, FALSE, TRUE, "before", "after", "middle")[[1]],
   barPerc = NULL, catPerc = NULL
 ) {
   non_null(list(
@@ -20,6 +21,7 @@ make_dataset <- function(
     fill = fill, backgroundColor = bgCol,
     borderColor = brdCol, borderWidth = brdWidth,
     pointRadius = radius, pointHoverRadius = hoverRadius,
+    lineTension = tension, steppedLine = stepped,
     barPercentage = barPerc, categoryPercentage = catPerc
   ))
 }
