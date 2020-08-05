@@ -2,21 +2,20 @@
 % Please edit documentation in R/options.R
 \name{alter_axis}
 \alias{alter_axis}
-\title{Alter an Axis}
+\title{Alter a Chart Axis}
 \usage{
 alter_axis(
   chart,
   id,
   xOrY = tolower(substr(id, 1, 1)),
   ...,
-  pos,
+  position,
   display = TRUE,
   grid = TRUE,
   type = "linear",
   title,
-  label,
   percent = FALSE,
-  digits = 2L,
+  decimals = 2L,
   min,
   max,
   suggestedMin,
@@ -24,8 +23,39 @@ alter_axis(
 )
 }
 \arguments{
-\item{pos}{One of: c("left", "right", "bottom", "top")}
+\item{chart}{A \code{chartjs} object.}
+
+\item{id}{The id of the axis to alter (character scalar, should start with "x" or "y").}
+
+\item{xOrY}{Whether the axis is an x-axis or y-axis object (character scalar, one of \code{c("x", "y")})..}
+
+\item{...}{Additional named arguments to add to the axis.}
+
+\item{position}{One of: \code{c("left", "right", "bottom", "top")}.}
+
+\item{display}{Whether to display the axis (boolean scalar).}
+
+\item{grid}{Whether to draw grid lines for the axis (boolean scalar).}
+
+\item{type}{The type of the axis (should keep as "linear") (character scalar).}
+
+\item{title}{The title/label of the axis (character scalar).}
+
+\item{percent}{Whether the axis should be displayed as a percent (boolean scalar).}
+
+\item{decimals}{The number of decimal places to use for percentage axes (integer scalar).}
+
+\item{min, max}{The minimum/maximum values to use for the axis (numeric/character scalar).}
+
+\item{suggestedMin, suggestedMax}{The suggested minimum/maximum values to use for the axis (numeric/character scalar).}
+}
+\value{
+A modified \code{chartjs} object.
 }
 \description{
-Alter an Axis
+See here for more detailed documentation:
+  \url{https://www.chartjs.org/docs/latest/axes/}.
+}
+\examples{
+
 }

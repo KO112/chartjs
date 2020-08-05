@@ -2,7 +2,7 @@
 % Please edit documentation in R/chartjs.R
 \name{chartjs}
 \alias{chartjs}
-\title{Create a \code{Chart.js} Plot}
+\title{Create a \code{Chart.js} Plot Object}
 \usage{
 chartjs(
   data,
@@ -16,27 +16,33 @@ chartjs(
 )
 }
 \arguments{
-\item{data}{}
+\item{data}{The data that the plot is based on (a \code{data.frame}-like object).}
 
-\item{x}{}
+\item{x}{An expression that evaluates to a vector that will be used as the x-axis values
+(see \code{x} in \code{eval_data}).}
 
-\item{type}{}
+\item{type}{The type of trace (character scalar, one of \code{c("bar", "line", "scatter", "horizontalBar")}).}
 
-\item{options}{}
+\item{options}{A list containing the options to start with.}
 
-\item{width}{}
+\item{elementId}{An ID string for the widget (will be randomly assigned) (character scalar).}
 
-\item{height}{}
-
-\item{elementId}{}
+\item{width/height}{The width/height of the \code{htmlwidget} container.}
 }
 \value{
-
+A \code{chartjs} \code{htmlwidget} object.
 }
 \description{
-Create a \code{Chart.js} Plot
+This is the starting function for creating a \code{charts} object in \code{R}.
+It operates similarly to \code{plotly::plot_ly}.
+}
+\details{
+See here for \code{Chart.js} examples: \url{https://www.chartjs.org/}.
+
+And see here for the official \code{Chart.js} library documentation:
+  \code{https://www.chartjs.org/docs/latest/}.
 }
 \examples{
-chartjs(mtcars, x = ~ mpg) \%>\% new_bars(y = ~ disp)
+chartjs(mtcars, x = 1:32) \%>\% new_bars(y = ~ disp)
 
 }

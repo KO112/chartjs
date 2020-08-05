@@ -5,21 +5,29 @@ NULL
 
 
 
-#' Create a \code{Chart.js} Plot
+#' Create a \code{Chart.js} Plot Object
 #' 
-#' @param data 
-#' @param x 
-#' @param type 
-#' @param options 
-#' @param width 
-#' @param height 
-#' @param elementId 
+#' This is the starting function for creating a \code{charts} object in \code{R}.
+#' It operates similarly to \code{plotly::plot_ly}.
 #' 
-#' @return
+#' See here for \code{Chart.js} examples: \url{https://www.chartjs.org/}.
+#' 
+#' And see here for the official \code{Chart.js} library documentation:
+#'   \code{https://www.chartjs.org/docs/latest/}.
+#' 
+#' @param data The data that the plot is based on (a \code{data.frame}-like object).
+#' @param x An expression that evaluates to a vector that will be used as the x-axis values
+#'   (see \code{x} in \code{eval_data}).
+#' @param type The type of trace (character scalar, one of \code{c("bar", "line", "scatter", "horizontalBar")}).
+#' @param options A list containing the options to start with.
+#' @param width/height The width/height of the \code{htmlwidget} container.
+#' @param elementId An ID string for the widget (will be randomly assigned) (character scalar).
+#' 
+#' @return  A \code{chartjs} \code{htmlwidget} object.
 #' @export
 #' 
 #' @examples
-#' chartjs(mtcars, x = ~ mpg) %>% new_bars(y = ~ disp)
+#' chartjs(mtcars, x = 1:32) %>% new_bars(y = ~ disp)
 #' 
 chartjs <- function(
   data, x, type = "bar", options = baseOptions,
@@ -49,6 +57,7 @@ chartjs <- function(
     options = options
   )
   
+  
   # Update the height 
   if (! grepl("%", height)) message$options$maintainAspectRatio <- FALSE
   
@@ -73,4 +82,22 @@ chartjs <- function(
   )
   
   
+}
+
+
+
+
+#' Check that an Object is a \code{Chart.js} Plot Object
+#'
+#' @param x The object to check (any R object).
+#'
+#' @return Whether the object inherits from \code{chartjs}.
+#' @export
+#'
+#' @examples
+#' is.chartjs(mtcars)                     # FALSE
+#' is.chartjs(chartjs(mtcars, x = ~ mpg)) # TRUE
+#' 
+is.chartjs <- function(x) {
+  inherits(x, "chartjs")
 }

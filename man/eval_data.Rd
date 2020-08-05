@@ -2,10 +2,33 @@
 % Please edit documentation in R/other.R
 \name{eval_data}
 \alias{eval_data}
-\title{Evaluate the data in the proper context}
+\title{Evaluate a Data Expression}
 \usage{
 eval_data(data, x)
 }
+\arguments{
+\item{data}{The raw data object that \code{x} will be evaluated inside of.}
+
+\item{x}{The data expression to evaluate.}
+}
+\value{
+A vector.
+}
 \description{
-Evaluate the data in the proper context
+Evaluate some data expression in the proper context.
+}
+\details{
+\code{x} can be either a:
+
+- Formula: will be evaluated as an expression inside of \code{data}.
+- Function: will be evaluated as-is, so must return the desired object in any context.
+- Vector: will be used as-is.
+- Character Scalar: will be used as the name of a column in the data.
+}
+\examples{
+print(eval_data(mtcars, ~ mpg))
+print(eval_data(x = function() mtcars$mpg))
+print(eval_data(mtcars, mtcars$mpg))
+print(eval_data(mtcars, "mpg"))
+
 }

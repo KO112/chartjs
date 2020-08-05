@@ -5,7 +5,22 @@ NULL
 
 
 
+#' Set Chart Padding
+#' 
+#' Set the padding around a \code{chartjs} object
+#' 
+#' See here for more detailed documentation:
+#'   \url{https://www.chartjs.org/docs/latest/configuration/layout.html?h=padding}.
+#' 
+#' @param chart A \code{chartjs} object.
+#' @param all The padding to apply to each side (numeric scalar).
+#' @param left,right,top,bottom The padding to apply to each individual side (overrides \code{all}) (numeric scalar).
+#'
+#' @return A modified \code{chartjs} object.
 #' @export
+#'
+#' @examples
+#' 
 set_padding <- function(chart, all = NULL, left = all, right = all, top = all, bottom = all) {
   chart$x$options$layout$padding <- non_null(list(left = left, right = right, top = top, bottom = bottom))
   return(chart)
@@ -14,12 +29,34 @@ set_padding <- function(chart, all = NULL, left = all, right = all, top = all, b
 
 
 
+#' Alter the Chart Legend
+#' 
+#' See here for more detailed documentation:
+#' \url{https://www.chartjs.org/docs/latest/configuration/legend.html}.
+#' 
+#' @param chart A \code{chartjs} object.
+#' @param ... Additional named arguments to add to the legend.
+#' @param position 
+#' @param align 
+#' @param display 
+#' @param fullWidth 
+#' @param onClick,onHover,onLeave 
+#' @param reverse 
+#' @param labels 
+#' @param rtl 
+#' @param textDirection 
+#'
+#' @return A modified \code{chartjs} object.
 #' @export
-set_legend <- function(
-  chart, ..., display = TRUE,
+#'
+#' @examples
+#' 
+alter_legend <- function(
+  chart, ...,
   position = c("top", "left", "bottom", "right"),
   align = c("center", "start", "end"),
-  fullWidth = TRUE, onClick = NULL, onHover = NULL, onLeave = NULL,
+  display = TRUE, fullWidth = TRUE,
+  onClick = NULL, onHover = NULL, onLeave = NULL,
   reverse = FALSE, labels = NULL, rtl = FALSE, textDirection = NULL
 ) {
   
@@ -42,14 +79,34 @@ set_legend <- function(
 
 
 
-#' Alter an Axis
+#' Alter a Chart Axis
 #' 
-#' @param pos One of: c("left", "right", "bottom", "top")
+#' See here for more detailed documentation:
+#'   \url{https://www.chartjs.org/docs/latest/axes/}.
+#' 
+#' @param chart A \code{chartjs} object.
+#' @param id The id of the axis to alter (character scalar, should start with "x" or "y").
+#' @param xOrY Whether the axis is an x-axis or y-axis object (character scalar, one of \code{c("x", "y")})..
+#' @param ... Additional named arguments to add to the axis.
+#' @param position One of: \code{c("left", "right", "bottom", "top")}.
+#' @param display Whether to display the axis (boolean scalar).
+#' @param grid Whether to draw grid lines for the axis (boolean scalar).
+#' @param type The type of the axis (should keep as "linear") (character scalar).
+#' @param title The title/label of the axis (character scalar).
+#' @param percent Whether the axis should be displayed as a percent (boolean scalar).
+#' @param decimals The number of decimal places to use for percentage axes (integer scalar).
+#' @param min,max The minimum/maximum values to use for the axis (numeric/character scalar).
+#' @param suggestedMin,suggestedMax The suggested minimum/maximum values to use for the axis (numeric/character scalar).
+#'
+#' @return A modified \code{chartjs} object.
 #' @export
+#'
+#' @examples
+#' 
 alter_axis <- function(
   chart, id, xOrY = tolower(substr(id, 1, 1)), ...,
-  pos, display = TRUE, grid = TRUE, type = "linear",
-  title, label, percent = FALSE, digits = 2L,
+  position, display = TRUE, grid = TRUE, type = "linear",
+  title, percent = FALSE, decimals = 2L,
   min, max, suggestedMin, suggestedMax
 ) {
   
@@ -80,20 +137,19 @@ alter_axis <- function(
     if (missing(suggestedMin)) suggestedMin <- 0
     axis$ticks$callback <- JS(glue::glue("
       function(value) {{
-        // return (value / this.max * 100).toFixed({digits}) + '%';
-        return (value * 100).toFixed({digits}) + '%';
+        // return (value / this.max * 100).toFixed({decimals}) + '%';
+        return (value * 100).toFixed({decimals}) + '%';
       }}
     "))
   }
   
   
-  # Set the title/position/grid status of the axis?
+  # Set the title/grid status of the axis?
   if (!missing(title)) {
-    axis$scaleLabel$display <- TRUE
+    axis$scaleLabel$display <- display
     axis$scaleLabel$labelString <- title
   }
-  if (!missing(pos)) axis$position <- pos
-  if (!missing(grid)) axis$grid <- list(drawOnChartArea = grid)
+  if (!missing(grid)) axis$gridLines <- list(drawOnChartArea = grid)
   
   # Set the min/max of the axis?
   if (!missing(min)) axis$ticks$min <- min
@@ -103,8 +159,8 @@ alter_axis <- function(
   
   # Add other passed arguments to the axis
   as.list(funCall)[-1] %>%
-    .[! names(.) %in% c("chart", "id", "xOrY", "pos", "grid", "percent", "min", "max", "suggestedMin", "suggestedMax")] %>%
-    # .[! names(.) %in% (args(alter_axis) %>% as.list() %>% names() %>% setdiff(c("", "...", "label", "digits")))] %>%
+    .[! names(.) %in% c("chart", "id", "xOrY", "grid", "percent", "min", "max", "suggestedMin", "suggestedMax")] %>%
+    # .[! names(.) %in% (args(alter_axis) %>% as.list() %>% names() %>% setdiff(c("", "...", "label", "decimals")))] %>%
     purrr::iwalk(~ {axis[[.y]] <<- .x})
   
   
@@ -119,7 +175,27 @@ alter_axis <- function(
 
 
 
+#' Alter Chart Options
+#' 
+#' See here for more detailed documentation:
+#'   \url{https://www.chartjs.org/docs/latest/general/options.html}.
+#' 
+#' @param chart A \code{chartjs} object.
+#' @param ... Additional named arguments to add to the options.
+#' @param animDur How long the initial plot building animation should take
+#'   (in milliseconds) (numeric scalar).
+#' @param hoverDelay How long to wait after hovering before showing a tooltip
+#'   (in milliseconds) (numeric scalar).
+#' @param resizeAnimDur How long the plot resizing animation should take
+#'   (in milliseconds) (numeric scalar).
+#' @param tension The default tension to use for lines between the points
+#'   (0 for straight lines, 0.4 is default) (numeric scalar).
+#'
+#' @return A modified \code{chartjs} object.
 #' @export
+#'
+#' @examples
+#' 
 alter_options <- function(
   chart, ..., animDur = 400, hoverDelay = 0, resizeAnimDur = 0, tension = 0.4
 ) {
@@ -147,26 +223,31 @@ alter_options <- function(
 
 
 
-#' Modify an Axis Title
+#' Modify an Axis/Chart Title
 #' 
-#' See: https://www.chartjs.org/docs/latest/axes/labelling.html
-#'
+#' See here for more detailed documentation for axis titles:
+#'   \url{https://www.chartjs.org/docs/latest/axes/labelling.html}.
+#' 
+#' See here for more detailed documentation for chart titles:
+#'   \url{https://www.chartjs.org/docs/latest/configuration/title.html}.
+#' 
 #' @param chart A \code{chartjs} object.
 #' @param id The ID of the axis to add a title to (character scalar).
 #' @param xOrY Whether the axis is an x or y-axis (character scalar).
-#' @param ... Additional options to be used in the axis title (has no effect here).
-#' @param title The title of the axis (character scalar).
-#' @param display Whether to display the axis title (boolean scalar).
+#' @param ... Additional named options to be used in the axis title (should have no effect here).
+#' @param title The title of the axis/chart (character scalar).
+#' @param display Whether to display the axis/chart title (boolean scalar).
 #' @param lineHeight The height of an individual line of text
 #'   (see \url{https://developer.mozilla.org/en-US/docs/Web/CSS/line-height}) (character/numeric scalar).
 #' @param fontColor The color of the title font (character scalar).
 #' @param fontSize The size of the title font (numeric scalar).
 #' @param fontStyle Space-separated combination of values from
-#'   [normal, italic, oblique, initial, inherit] (character scalar).
+#'   [normal, bold, italic, oblique, initial, inherit] (character scalar).
 #' @param fontFamily The font family of the title text (character scalar).
 #' @param padding The padding to use around the axis title (numeric scalar).
 #' 
 #' @return A modified \code{chartjs} object.
+#' @rdname titles
 #' @export
 #' 
 #' @examples
@@ -185,8 +266,7 @@ axis_title <- function(
   
   # Set the axis group
   axisGroup <- if (tolower(xOrY[1]) == "x") "xAxes" else "yAxes"
-  scaleLabel <- chart$x$options$scales[[axisGroup]][[id]]$scaleLabel
-  if (is.null(scaleLabel)) scaleLabel <- list()
+  scaleLabel <- as.list(chart$x$options$scales[[axisGroup]][[id]]$scaleLabel)
   
   # Add other passed arguments to the axis
   as.list(funCall)[-1] %>%
@@ -195,6 +275,43 @@ axis_title <- function(
   
   # Return the modified chart object
   chart$x$options$scales[[axisGroup]][[id]]$scaleLabel <- scaleLabel
+  return(chart)
+  
+}
+
+
+
+
+#' @param position The position of the chart title (character scalar).
+#'
+#' @name titles
+#' @export
+#'
+#' @examples
+#' 
+chart_title <- function(
+  chart, ...,
+  title, display = TRUE, lineHeight = 1.2,
+  position = c("top", "left", "bottom", "right")[1],
+  fontColor = "#666", fontSize = 12, fontStyle = "normal",
+  fontFamily = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+  padding = 4 # list(top = 4, bottom = 4)
+) {
+  
+  # Extract the title object
+  titleObj <- as.list(chart$x$options$title)
+  if (!missing(title)) {
+    titleObj$display <- display
+    titleObj$text <- title
+  }
+  
+  # Add passed arguments to the title object
+  as.list(match.call())[-1] %>%
+    .[! names(.) %in% c("chart", "id", "xOrY", "title", "display")] %>%
+    purrr::iwalk(~ {titleObj[[.y]] <<- .x})
+  
+  # Return the modified chart object
+  chart$x$options$title <- titleObj
   return(chart)
   
 }

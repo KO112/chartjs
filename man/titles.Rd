@@ -2,7 +2,9 @@
 % Please edit documentation in R/options.R
 \name{axis_title}
 \alias{axis_title}
-\title{Modify an Axis Title}
+\alias{titles}
+\alias{chart_title}
+\title{Modify an Axis/Chart Title}
 \usage{
 axis_title(
   chart,
@@ -18,6 +20,20 @@ axis_title(
   fontFamily = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
   padding = 4
 )
+
+chart_title(
+  chart,
+  ...,
+  title,
+  display = TRUE,
+  lineHeight = 1.2,
+  position = c("top", "left", "bottom", "right")[1],
+  fontColor = "#666",
+  fontSize = 12,
+  fontStyle = "normal",
+  fontFamily = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+  padding = 4
+)
 }
 \arguments{
 \item{chart}{A \code{chartjs} object.}
@@ -26,11 +42,11 @@ axis_title(
 
 \item{xOrY}{Whether the axis is an x or y-axis (character scalar).}
 
-\item{...}{Additional options to be used in the axis title (has no effect here).}
+\item{...}{Additional named options to be used in the axis title (should have no effect here).}
 
-\item{title}{The title of the axis (character scalar).}
+\item{title}{The title of the axis/chart (character scalar).}
 
-\item{display}{Whether to display the axis title (boolean scalar).}
+\item{display}{Whether to display the axis/chart title (boolean scalar).}
 
 \item{lineHeight}{The height of an individual line of text
 (see \url{https://developer.mozilla.org/en-US/docs/Web/CSS/line-height}) (character/numeric scalar).}
@@ -40,18 +56,26 @@ axis_title(
 \item{fontSize}{The size of the title font (numeric scalar).}
 
 \item{fontStyle}{Space-separated combination of values from
-[normal, italic, oblique, initial, inherit] (character scalar).}
+[normal, bold, italic, oblique, initial, inherit] (character scalar).}
 
 \item{fontFamily}{The font family of the title text (character scalar).}
 
 \item{padding}{The padding to use around the axis title (numeric scalar).}
+
+\item{position}{The position of the chart title (character scalar).}
 }
 \value{
 A modified \code{chartjs} object.
 }
 \description{
-See: https://www.chartjs.org/docs/latest/axes/labelling.html
+See here for more detailed documentation for axis titles:
+  \url{https://www.chartjs.org/docs/latest/axes/labelling.html}.
+}
+\details{
+See here for more detailed documentation for chart titles:
+  \url{https://www.chartjs.org/docs/latest/configuration/title.html}.
 }
 \examples{
+
 
 }
